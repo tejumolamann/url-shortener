@@ -1,2 +1,2 @@
 # url-shortener
-Assessment: URL-Shortener as a REST Service (Spring Boot)
+URL-Shortener microservice as a REST Service developed in Java using a Spring Boot framework.
