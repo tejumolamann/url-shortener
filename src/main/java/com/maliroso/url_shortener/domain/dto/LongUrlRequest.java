@@ -6,21 +6,21 @@ import org.apache.commons.validator.routines.UrlValidator;
 
 /**
  * Represents a request to create a short URL from a given long URL.
- *
+ * <p>
  * The {@code CreateUrlRequest} record encapsulates a single field, {@code longUrl},
  * which represents the URL to be shortened. The input URL is validated during
  * initialization to ensure it is a properly formatted and valid URL.
- *
+ * <p>
  * Validation rules:
  * - The {@code longUrl} field must not be blank or empty.
  * - The {@code longUrl} must comply with URL format standards. URLs with fragments
  *   or unsupported structures are considered invalid.
- *
+ * <p>
  * Upon validation failure, an {@code IllegalArgumentException} is thrown.
- *
+ * <p>
  * Thread Safety:
  * - Instances of this record are immutable and thus thread-safe.
- *
+ * <p>
  * Use this record as part of the URL shortening flow where client applications
  * supply a URL to be shortened.
  */
