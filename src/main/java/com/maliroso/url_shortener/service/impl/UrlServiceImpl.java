@@ -24,6 +24,9 @@ public class UrlServiceImpl implements UrlService {
 
     private final ShortCodeMapper mapper;
 
+    /**
+     * Creates short URL; persists it; returns response
+     */
     @Override
     public ShortCodeResponse createShortUrl(String longUrl) {
         String code = codeGenerator.generateCode(longUrl);
@@ -46,8 +49,10 @@ public class UrlServiceImpl implements UrlService {
     }
 
     @Override
-    public void resolveCode(String code) {
-        // to be implemented
+    public Optional<String> resolveCode(String code) {
+        Optional<ShortUrl> optionalShortUrl = repository.findByCode(code);
+
+        return optionalShortUrl.map(ShortUrl::getLongUrl);
     }
 
     @Override

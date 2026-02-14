@@ -1,7 +1,7 @@
 spring:
   config:
     activate:
-      on-profile: dev
+      on-profile: development
 
   datasource:
     url: jdbc:postgresql://localhost:5432/url_shortener_dev

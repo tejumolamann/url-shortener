@@ -4,6 +4,8 @@ import com.maliroso.url_shortener.domain.dto.ShortCodeMetadata;
 import com.maliroso.url_shortener.domain.dto.ShortCodeResponse;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 /**
  * The UrlService interface defines the core contract for URL shortening functionality.
  * Implementations of this interface are responsible for providing the logic to create
@@ -34,9 +36,11 @@ public interface UrlService {
 
     /**
      * This method resolves the short URL code to the original long URL.
+     *
      * @param code the short URL code
+     * @return - an {@code Optional<String>} containing the resolved long or an empty {@code Optional}.
      */
-    void resolveCode(String code);
+    Optional<String> resolveCode(String code);
 
     /**
      * Retrieves metadata associated with a given short URL code.
