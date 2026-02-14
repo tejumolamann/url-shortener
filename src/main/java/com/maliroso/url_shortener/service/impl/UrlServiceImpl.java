@@ -4,6 +4,8 @@ import com.maliroso.url_shortener.domain.dto.ShortCodeMetadata;
 import com.maliroso.url_shortener.domain.dto.ShortCodeResponse;
 import com.maliroso.url_shortener.domain.entity.ShortUrl;
 import com.maliroso.url_shortener.domain.mapper.ShortCodeMapper;
+import com.maliroso.url_shortener.exception.UrlExpiredException;
+import com.maliroso.url_shortener.exception.UrlNotFoundException;
 import com.maliroso.url_shortener.metrics.ShortenerMetrics;
 import com.maliroso.url_shortener.repository.ShortUrlRepository;
 import com.maliroso.url_shortener.service.CodeGenerator;
@@ -64,6 +66,14 @@ public class UrlServiceImpl implements UrlService {
     public Optional<String> resolveCode(String code) {
         Optional<ShortUrl> optionalShortUrl = repository.findByCode(code);
 
+        if (optionalShortUrl.isEmpty()) {
+            throw new UrlNotFoundException("code not found:" + code);
+        }
+
+        if (optionalShortUrl.get().isExpired()) {
+            throw new UrlExpiredException("code expired:" + code);
+        }
+
         return optionalShortUrl.map((shortUrl -> {
 
             // Update the hit count and persist it
@@ -81,7 +91,7 @@ public class UrlServiceImpl implements UrlService {
     public ShortCodeMetadata fetchCodeMetadata(String code) {
         Optional<ShortUrl> optionalShortUrl = repository.findByCode(code);
 
-        ShortUrl shortUrl = optionalShortUrl.orElseThrow(() -> new IllegalArgumentException("Code not found: " + code));
+        ShortUrl shortUrl = optionalShortUrl.orElseThrow(() -> new UrlNotFoundException("code not found:" + code));
 
         return mapper.toShortCodeMetadata(shortUrl);
     }
