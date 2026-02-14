@@ -4,6 +4,7 @@ import com.maliroso.url_shortener.domain.dto.ShortCodeMetadata;
 import com.maliroso.url_shortener.domain.dto.ShortCodeResponse;
 import com.maliroso.url_shortener.domain.entity.ShortUrl;
 import com.maliroso.url_shortener.domain.mapper.ShortCodeMapper;
+import com.maliroso.url_shortener.metrics.ShortenerMetrics;
 import com.maliroso.url_shortener.repository.ShortUrlRepository;
 import com.maliroso.url_shortener.service.CodeGenerator;
 import com.maliroso.url_shortener.service.UrlService;
@@ -23,6 +24,8 @@ public class UrlServiceImpl implements UrlService {
     private final ShortUrlRepository repository;
 
     private final ShortCodeMapper mapper;
+
+    private final ShortenerMetrics metrics;
 
     /**
      * Creates short URL; persists it; returns response
@@ -45,6 +48,9 @@ public class UrlServiceImpl implements UrlService {
             hostname = "localhost";
         }
 
+        // Metrics
+        metrics.incrementCreate();
+
         return new ShortCodeResponse(code, hostname + "/r/" + code);
     }
 
@@ -64,6 +70,8 @@ public class UrlServiceImpl implements UrlService {
             long count = shortUrl.getHitCount() + 1;
             shortUrl.setHitCount(count);
             repository.save(shortUrl);
+
+            metrics.incrementRedirect();
 
             return shortUrl.getLongUrl();
         }));

@@ -74,6 +74,12 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- Dependency for observability -->
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-registry-prometheus</artifactId>
+		</dependency>
+
 		<!-- Dependency for DTO mapping -->
 		<dependency>
 			<groupId>org.mapstruct</groupId>
