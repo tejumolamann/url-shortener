@@ -48,11 +48,25 @@ public class UrlServiceImpl implements UrlService {
         return new ShortCodeResponse(code, hostname + "/r/" + code);
     }
 
+    /**
+     * Resolves a shortened code to its corresponding long URL while updating the hit count for the code.
+     *
+     * @param code the unique shortened code to resolve
+     * @return an Optional containing the resolved long URL if the code exists, or an empty Optional if the code is not found
+     */
     @Override
     public Optional<String> resolveCode(String code) {
         Optional<ShortUrl> optionalShortUrl = repository.findByCode(code);
 
-        return optionalShortUrl.map(ShortUrl::getLongUrl);
+        return optionalShortUrl.map((shortUrl -> {
+
+            // Update the hit count and persist it
+            long count = shortUrl.getHitCount() + 1;
+            shortUrl.setHitCount(count);
+            repository.save(shortUrl);
+
+            return shortUrl.getLongUrl();
+        }));
     }
 
     @Override
