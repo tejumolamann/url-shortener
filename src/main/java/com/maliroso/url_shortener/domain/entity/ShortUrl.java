@@ -10,6 +10,27 @@ import lombok.Setter;
 
 import java.time.Instant;
 
+/**
+ * Represents a shortened URL entity for use in a URL shortening service.
+ * <p>
+ * This class maps to the "short_urls" table in the database and contains
+ * relevant information about the shortened URL, including the original long
+ * URL, the shortened code, and metadata such as creation/expiration timestamps
+ * and hit count.
+ * <p>
+ * Features:
+ * - Stores the original long URL and its corresponding shortened code.
+ * - Tracks creation and optional expiration timestamps.
+ * - Maintains a hit count to monitor usage.
+ * - Supports functionality to determine whether the URL has expired.
+ * <p>
+ * Equality and Hashing:
+ * - Equality and hashcode are based on all fields.
+ * <p>
+ * String Representation:
+ * - A string representation of the entity is provided using Google Guava's
+ *   MoreObjects.ToStringHelper.
+ */
 @Entity
 @Table(name = "short_urls")
 @NoArgsConstructor
